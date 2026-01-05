@@ -37,7 +37,11 @@ Deepen your understanding of AI and iOS development with these books:
 
 ```swift
 public final class LumoKit {
-    public init(config: VecturaConfig, chunkingConfig: ChunkingConfig = ChunkingConfig()) async throws
+    public init(
+        config: VecturaConfig,
+        chunkingConfig: ChunkingConfig = ChunkingConfig(),
+        embedder: VecturaEmbedder? = nil
+    ) async throws
 
     public func parseAndIndex(url: URL, chunkingConfig: ChunkingConfig? = nil) async throws
     public func parseDocument(from url: URL, chunkingConfig: ChunkingConfig? = nil) async throws -> [Chunk]
@@ -126,10 +130,14 @@ let chunkingConfig = ChunkingConfig(
     contentType: .prose  // For prose text
 )
 
+// Configure an embedder (optional; defaults to SwiftEmbedder)
+let embedder = SwiftEmbedder(modelSource: .default)
+
 // Initialize LumoKit
 let lumoKit = try await LumoKit(
     config: vecturaConfig,
-    chunkingConfig: chunkingConfig
+    chunkingConfig: chunkingConfig,
+    embedder: embedder
 )
 
 // Parse and index a document

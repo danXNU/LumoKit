@@ -15,13 +15,15 @@ public final class LumoKit {
     /// - Parameters:
     ///   - config: Configuration for the VecturaKit vector database
     ///   - chunkingConfig: Configuration for text chunking (uses defaults if not provided)
+    ///   - embedder: Optional embedder for VecturaKit (defaults to SwiftEmbedder if nil)
     /// - Throws: Errors from VecturaKit initialization
     public init(
         config: VecturaConfig,
-        chunkingConfig: ChunkingConfig? = nil
+        chunkingConfig: ChunkingConfig? = nil,
+        embedder: VecturaEmbedder? = nil
     ) async throws {
-        let embedder = SwiftEmbedder()
-        self.vectura = try await VecturaKit(config: config, embedder: embedder)
+        let resolvedEmbedder = embedder ?? SwiftEmbedder()
+        self.vectura = try await VecturaKit(config: config, embedder: resolvedEmbedder)
         self.defaultChunkingConfig = try chunkingConfig ?? ChunkingConfig()
     }
 
